@@ -14,7 +14,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # http://packaging.python.org/en/latest/tutorial.html#version
-    version='0.0.1',
+    version='0.0.3',
 
     description='Interface with ArcGIS Online hosted serivces through Pandas Data Frame objects',
     long_description=long_description,
@@ -55,4 +55,5 @@ setup(
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     packages=find_packages(exclude=['agolpandas*', 'tests*']),
+    install_requires=['pandas','requests','nose'],
 )
