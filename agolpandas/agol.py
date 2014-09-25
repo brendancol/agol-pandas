@@ -8,7 +8,6 @@ import unittest
 import numpy
 import requests
 import pandas
-import agol_settings
 
 def chunker(seq, size):
 	return (seq[pos:pos + size] for pos in xrange(0, len(seq), size))
@@ -126,20 +125,20 @@ def generate_token(username, password, referer=None, tokenURL=None, proxy_url=No
 	else:
 		return token['token']
 
-def add_tags(tags, token):
-	url = os.path.join(agol_settings.agol_base, 'sharing/rest/community/users', agol_settings.username, 'tags')
-	response = requests.get(url)
+# def add_tags(tags, token):
+# 	url = os.path.join(agol_settings.agol_base, 'sharing/rest/community/users', agol_settings.username, 'tags')
+# 	response = requests.get(url)
 
-def is_service_name_available(name, serviceType, token):
-	url = os.path.join(agol_settings.agol_base, 'sharing/rest/portals', agol_settings.agol_id, 'isServiceNameAvailable')
-	params = {}
-	params['name'] = name
-	params['type'] = serviceType
-	params['f'] = 'json'
-	params['token'] = token
+# def is_service_name_available(name, serviceType, token):
+# 	url = os.path.join(agol_settings.agol_base, 'sharing/rest/portals', agol_settings.agol_id, 'isServiceNameAvailable')
+# 	params = {}
+# 	params['name'] = name
+# 	params['type'] = serviceType
+# 	params['f'] = 'json'
+# 	params['token'] = token
 
-	result = requests.get(url, params=params)
-	return result.json()['available']
+# 	result = requests.get(url, params=params)
+# 	return result.json()['available']
 
 def create_feature_service(name, token):
 	if not is_service_name_available(name, 'Feature Service', token):
