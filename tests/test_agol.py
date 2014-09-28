@@ -14,6 +14,7 @@ class TestAgol():
 		data['null_test'] = None
 		self.df = pandas.DataFrame([data])
 		self.config = agol.load_config()
+		self.token = agol.generate_token(self.config.get('user'), self.config.get('pass'))
 
 	def test_load_config(self):
 		config = agol.load_config()
@@ -30,6 +31,10 @@ class TestAgol():
 	def test_able_to_generate_token(self):
 		token = agol.generate_token(self.config.get('user'), self.config.get('pass'))
 		assert token is not None
+
+	def test_get_credits_count(self):
+		count = agol.get_credits_count(self.config.get('org_url'), self.token)
+		assert isinstance(count, float) and count >= 0.0
 
 	def test_query(self):
 		pass

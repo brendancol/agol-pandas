@@ -14,7 +14,7 @@ def load_config(config_file='.agolcfg'):
     '''Load configuration file for ArcGIS Online.
 
     Keyword arguments:
-    config_file -- file path to config file to load. 
+    config_file -- file path to config file to load.
         By default looks for .agolcfg in usr home directory
     '''
     if not os.path.exists(config_file):
@@ -33,14 +33,13 @@ def generate_token(username, password, referer=None):
     username -- agol username
     password -- agol password
 
-
     Keyword arguments:
     referer -- supply custom http referer header
     '''
     if not referer:
         referer = r'https://www.arcgis.com'
 
-    url  = r'https://www.arcgis.com/sharing/rest/generateToken'
+    url = r'https://www.arcgis.com/sharing/rest/generateToken'
     params = {}
     params['username'] = username
     params['password'] = password
@@ -56,20 +55,53 @@ def generate_token(username, password, referer=None):
     else:
         return response.json()['token']
 
+def get_credits_count(organization_url, token):
+    '''Get number of ArcGIS Online credits available
+
+    Required arguments:
+    organization_url -- base url for organization e.g. https://blueraster.maps.arcgis.com/
+    token -- agol token
+    '''
+
+    url = '{}/sharing/rest/portals/self'.format(organization_url)
+    params = {}
+    params['culture'] = 'en'
+    params['token'] = token
+    params['f'] = 'json'
+    response = requests.post(url, data=params)
+    response.raise_for_status()
+
+    if "availableCredits" not in response.json():
+        print response.json()
+        return None
+    else:
+        return response.json()['availableCredits']
+
 def chunker(seq, size):
     return (seq[pos:pos + size] for pos in xrange(0, len(seq), size))
 
-def featureset_to_dataframe(featureset, convertGeometry=False, useAliases=False):
+def featureset_to_dataframe(featureset, convert_geometry=False, use_aliases=False):
     items = [x['attributes'] for x in featureset['features']]
     df = pandas.DataFrame(items)
-    if useAliases and featureset.get('fieldAliases'):
+    if use_aliases and featureset.get('fieldAliases'):
         df.rename(columns=featureset['fieldAliases'], inplace=True)
-    if convertGeometry:
+    if convert_geometry:
         pass
     return df
 
-def dataframe_to_featureset(dataFrame, xField=None, yField=None, wkid=4326, output='json'):
-    dicts = dataFrame.to_dict(outtype='records')
+def dataframe_to_featureset(data_frame, xField=None, yField=None, wkid=4326, output='json'):
+    '''Converts pandas.DataFrame to esri featureset json string.
+
+    WARNING: Currently only handles point features
+
+    Required arguments:
+    data_frame -- Pandas Data Frame object
+    password -- agol password
+
+    Keyword arguments:
+    referer -- supply custom http referer header
+    '''
+    dicts = data_frame.to_dict(outtype='records')
     features = [{'attributes':d} for d in dicts]
     for f in features:
         for attr in f['attributes'].keys():
@@ -418,9 +450,9 @@ def delete_features(url, where, token):
     if r.json():
         print 'deleted {} items from {}'.format(len(r.json()['deleteResults']), url)
 
-def query_to_dataframe(layer, where, token=None, outFields='*', chunkSize=100, useAliases=True):
+def query_to_dataframe(layer, where, token=None, outFields='*', chunkSize=100, use_aliases=True):
     featureset = query_layer(layer, where, token, outFields, chunkSize)
-    return featureset_to_dataframe(featureset, useAliases=useAliases)
+    return featureset_to_dataframe(featureset, use_aliases=use_aliases)
 
 def query_layer(layer, where, token=None, outFields='*', chunkSize=100, returnGeometry=False):
     url = layer + r'/query'
