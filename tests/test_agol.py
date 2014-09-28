@@ -13,7 +13,23 @@ class TestAgol():
 		data['bool_test'] = True
 		data['null_test'] = None
 		self.df = pandas.DataFrame([data])
+		self.config = agol.load_config()
+
+	def test_load_config(self):
+		config = agol.load_config()
+		assert isinstance(config, dict)
+
+	def test_should_load_config_from_user_home(self):
+		config = agol.load_config('jar jar binks')
+		assert isinstance(config, dict)
 
 	def test_dataframe_to_featureset(self):
 		result = agol.dataframe_to_featureset(self.df)
-		assert result 
+		assert result
+
+	def test_able_to_generate_token(self):
+		token = agol.generate_token(self.config.get('user'), self.config.get('pass'))
+		assert token is not None
+
+	def test_query(self):
+		pass
