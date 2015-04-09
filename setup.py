@@ -9,9 +9,9 @@ with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
 
 INSTALL_REQUIRES = []
 TESTS_REQUIRES = [
-    'nose-cov',
-    'pylint',
-    'tox'
+    'pandas',
+    'requests',
+    'nose'
 ]
 
 setup(
@@ -34,10 +34,5 @@ setup(
     packages=find_packages(),
     install_requires=INSTALL_REQUIRES,
     tests_require=TESTS_REQUIRES,
-    extras_require={
-        "pandas": ["pandas"],
-        "requests": ["requests"],
-    },
     keywords='esri agol pandas',
-    install_requires=['pandas','requests','nose'],
 )
