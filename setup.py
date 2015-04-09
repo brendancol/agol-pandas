@@ -7,17 +7,19 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-INSTALL_REQUIRES = []
-TESTS_REQUIRES = [
+INSTALL_REQUIRES = [
     'pandas',
     'requests',
+]
+
+TESTS_REQUIRES = [
     'nose'
 ]
 
 setup(
     name='agol-pandas',
     version='0.0.6',
-    py_modules=['agolpandas'],
+    packages=['agolpandas'],
     description='Interface with ArcGIS Online hosted serivces through Pandas Data Frame objects',
     long_description=long_description,
     url='https://github.com/brendancol/agol-pandas',
