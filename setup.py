@@ -19,7 +19,6 @@ TESTS_REQUIRES = [
 setup(
     name='agol-pandas',
     version='0.0.6',
-    packages=['agolpandas'],
     description='Interface with ArcGIS Online hosted serivces through Pandas Data Frame objects',
     long_description=long_description,
     url='https://github.com/brendancol/agol-pandas',
